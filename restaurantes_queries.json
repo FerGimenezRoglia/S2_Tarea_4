@@ -1,0 +1,166 @@
+
+{
+  "database": "restaurants",
+  "queries": [
+    {
+      "id": 1,
+      "description": "Muestra todos los documentos en la colección Restaurantes.",
+      "query": "db.restaurants.find();"
+    },
+    {
+      "id": 2,
+      "description": "Muestra restaurante_id, name, borough y cuisine para todos los documentos en la colección Restaurantes.",
+      "query": "db.restaurants.find({}, {restaurant_id: 1, name: 1, borough: 1, cuisine: 1});"
+    },
+    {
+      "id": 3,
+      "description": "Muestra restaurante_id, name, borough y cuisine, pero excluye el campo _id para todos los documentos en la colección Restaurantes.",
+      "query": "db.restaurants.find({}, {restaurant_id: 1, name: 1, borough: 1, cuisine: 1, _id:0});"
+    },
+    {
+      "id": 4,
+      "description": "Muestra restaurant_id, name, borough y zip code, pero excluye el campo _id para todos los documentos en la colección Restaurantes.",
+      "query": "db.restaurants.find({}, {restaurant_id: 1, name: 1, borough: 1, \"address.zipcode\": 1, _id: 0});"
+    },
+    {
+      "id": 5,
+      "description": "Muestra todos los restaurantes que están en el Bronx.",
+      "query": "db.restaurants.find({borough: \"Bronx\"}).pretty();"
+    },
+    {
+      "id": 6,
+      "description": "Muestra los primeros 5 restaurantes que están en el Bronx.",
+      "query": "db.restaurants.find({borough: \"Bronx\"}).limit(5).pretty();"
+    },
+    {
+      "id": 7,
+      "description": "Muestra el próximo 5 restaurantes después de saltar los primeros 5 del Bronx.",
+      "query": "db.restaurants.find({borough: \"Bronx\"}).skip(5).limit(5);"
+    },
+    {
+      "id": 8,
+      "description": "Encuentra los restaurantes que tienen un resultado además de 90.",
+      "query": "db.restaurants.find({\"grades.score\": {$gt: 90}});"
+    },
+    {
+      "id": 9,
+      "description": "Encuentra los restaurantes que tienen un resultado además de 80 pero menos que 100.",
+      "query": "db.restaurants.find({\"grades.score\": {$gt: 80, $lt: 100}});"
+    },
+    {
+      "id": 10,
+      "description": "Encuentra a los restaurantes que se localizan en valor de latitud menos de -95.754168.",
+      "query": "db.restaurants.find({\"address.coord.1\": { $lt: -95.754168 }});"
+    },
+    {
+      "id": 11,
+      "description": "Encuentra los restaurantes que no preparan ninguna cuisine de 'American', su calificación es superior a 70 y longitud inferior a -65.754168.",
+      "query": "db.restaurants.find({$and: [{cuisine: {$ne: \"American \"}}, {\"grades.score\": {$gt: 70}}, {\"address.coord.0\": {$lt: -65.754168}}]});"
+    },
+    {
+      "id": 12,
+      "description": "Encuentra los restaurantes que no preparan ninguna cuisine de 'American', consiguieron un marcador más de 70 y están en longitud menos que -65.754168, sin utilizar $and.",
+      "query": "db.restaurants.find({cuisine: {$ne: \"American \"}, \"grades.score\": {$gt: 70}, \"address.coord.0\": {$lt: -65.754168}});"
+    },
+    {
+      "id": 13,
+      "description": "Encuentra los restaurantes que no preparan ninguna cuisine de 'American', obtuvieron un punto de grado 'A' y no pertenecen a Brooklyn, ordenados por cuisine en orden descendente.",
+      "query": "db.restaurants.find({cuisine: {$ne: \"American \"}, \"grades.grade\": \"A\", borough: {$ne: \"Brooklyn\"}}).sort({cuisine: -1});"
+    },
+    {
+      "id": 14,
+      "description": "Encuentra el restaurante_id, name, borough y cuisine para aquellos restaurantes que contienen 'Wil' como las tres primeras letras en su nombre.",
+      "query": "db.restaurants.find({name: {$regex: /^Wil/}}, {_id: 0, restaurant_id: 1, name: 1, borough: 1, cuisine: 1});"
+    },
+    {
+      "id": 15,
+      "description": "Encuentra el restaurante_id, name, borough y cuisine para aquellos restaurantes que contienen 'ces' como las últimas tres letras en su nombre.",
+      "query": "db.restaurants.find({name: {$regex: /ces$/}}, {_id: 0, restaurant_id: 1, name: 1, borough: 1, cuisine: 1});"
+    },
+    {
+      "id": 16,
+      "description": "Encuentra el restaurante_id, name, borough y cuisine para aquellos restaurantes que contienen 'Reg' como tres letras en algún sitio en su nombre.",
+      "query": "db.restaurants.find({name: {$regex: /Reg/}}, {_id: 0, restaurant_id: 1, name: 1, borough: 1, cuisine: 1});"
+    },
+    {
+      "id": 17,
+      "description": "Encuentra los restaurantes que pertenecen al Bronx y prepararon cualquier plato americano o chino.",
+      "query": "db.restaurants.find({cuisine: {$in: [\"American \", \"Chinese\"]}, borough: \"Bronx\"});"
+    },
+    {
+      "id": 18,
+      "description": "Encuentra el restaurante_id, name, borough y cuisine para aquellos restaurantes que pertenecen a Staten Island, Queens, Bronx o Brooklyn.",
+      "query": "db.restaurants.find({borough: {$in: [\"Bronx\", \"Staten Island\", \"Queens\", \"Brooklyn\"]}}, {restaurant_id: 1, name: 1, borough: 1, cuisine: 1});"
+    },
+    {
+      "id": 19,
+      "description": "Encuentra el restaurante_id, name, borough y cuisine para aquellos restaurantes que no pertenecen a Staten Island, Queens, Bronx o Brooklyn.",
+      "query": "db.restaurants.find({borough: {$nin: [\"Bronx\", \"Staten Island\", \"Queens\", \"Brooklyn\"]}}, {restaurant_id: 1, name: 1, borough: 1, cuisine: 1});"
+    },
+    {
+      "id": 20,
+      "description": "Encuentra restaurante_id, name, borough y cuisine para aquellos restaurantes que consiguen un marcador que no es más de 10.",
+      "query": "db.restaurants.find({\"grades.score\": {$lte: 10}}, {restaurant_id: 1, name: 1, borough: 1, cuisine: 1});"
+    },
+    {
+      "id": 21,
+      "description": "Encuentra el restaurante_id, name, borough y cuisine para aquellos restaurantes que preparan pescado excepto 'American' y 'Chinese' o el nombre del restaurante comienza con 'Wil'.",
+      "query": "db.restaurants.find({$or:[{cuisine: \"Seafood\"},{$and:[{name:{$regex:/^Wil/}},{cuisine:{$nin:[\"American \", \"Chinese\"]}}]}]},{_id: 0,restaurant_id: 1,name: 1,borough: 1,cuisine: 1});"
+    },
+    {
+      "id": 22,
+      "description": "Encuentra el restaurante_id, name y grados para aquellos restaurantes que consigan un grado 'A', un marcador de 11 y fecha específica.",
+      "query": "db.restaurants.find({\"grades\":{ $elemMatch:{\"grade\":\"A\",\"score\":11,\"date\":ISODate(\"2014-08-11T00:00:00Z\")}}},{restaurant_id:1, name:1, grades:1});"
+    },
+    {
+      "id": 23,
+      "description": "Encuentra el restaurante_id, name y grados para aquellos restaurantes donde el 2º elemento de grados contiene un grado de 'A' con marcador 9.",
+      "query": "db.restaurants.find({\"grades.1.grade\":\"A\", \"grades.1.score\":9, \"grades.1.date\":ISODate(\"2014-08-11T00:00:00.000Z\")},{restaurant_id:1, name:1, grades:1});"
+    },
+    {
+      "id": 24,
+      "description": "Encuentra restaurante_id, name, dirección y ubicación donde el segundo elemento de coordenadas está entre 42 y 52.",
+      "query": "db.restaurants.find({\"address.coord.1\":{$gt:42,$lte:52}},{restaurant_id: 1,name: 1,address:{coord: 1},_id: 0});"
+    },
+    {
+      "id": 25,
+      "description": "Organiza el nombre de los restaurantes en orden ascendente.",
+      "query": "db.restaurants.find({}).sort({name : 1});"
+    },
+    {
+      "id": 26,
+      "description": "Organiza el nombre de los restaurantes en orden descendente.",
+      "query": "db.restaurants.find({}).sort({name : -1});"
+    },
+    {
+      "id": 27,
+      "description": "Organiza la cuisine en orden ascendente y por barrio en orden descendente.",
+      "query": "db.restaurants.find({}).sort({cuisine : 1, borough:-1});"
+    },
+    {
+      "id": 28,
+      "description": "Encuentra todas las direcciones que no contienen la calle.",
+      "query": "db.restaurants.find({\"address.street\":{$exists: false}});"
+    },
+    {
+      "id": 29,
+      "description": "Selecciona todos los documentos cuyo campo coord es de tipo Double.",
+      "query": "db.restaurants.find({\"address.coord\":{$type:\"double\"}});"
+    },
+    {
+      "id": 30,
+      "description": "Selecciona restaurante_id, name y grados para restaurantes cuyo marcador dividido por 7 deja un resto de 0.",
+      "query": "db.restaurants.find({\"grades.score\": {$mod:[7,0]}},{restaurant_id:1,name:1,grades:1,_id:0});"
+    },
+    {
+      "id": 31,
+      "description": "Encuentra name, borough, coordenadas y cuisine para restaurantes con 'mon' en su nombre.",
+      "query": "db.restaurants.find({name:{$regex: /mon/i}},{name:1, borough:1, \"address.coord\":1,cuisine: 1});"
+    },
+    {
+      "id": 32,
+      "description": "Encuentra name, borough, longitud, latitud y cuisine para restaurantes cuyo nombre empieza con 'Mad'.",
+      "query": "db.restaurants.find({name:{$regex: /^Mad/}},{name:1, borough:1, \"address.coord\":1,cuisine: 1});"
+    }
+  ]
+}
